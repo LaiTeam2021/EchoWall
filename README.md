@@ -1,4 +1,4 @@
-# developerForFun
+# EchoWall Backend
 
 ### Spring boot
 

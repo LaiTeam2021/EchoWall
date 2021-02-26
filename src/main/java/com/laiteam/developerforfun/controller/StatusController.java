@@ -1,6 +1,8 @@
-package com.laiteam.developerforfun;
+package com.laiteam.developerforfun.controller;
 
+import com.laiteam.developerforfun.response.ApiSuccessResponse;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,13 +22,13 @@ public class StatusController {
 
     @GetMapping("/")
     @ResponseBody
-    public HashMap<String, String> healthCheck() throws IllegalAccessException {
+    public ResponseEntity<?> healthCheck() throws IllegalAccessException {
         HashMap<String, String> map = new HashMap<>();
         Field[] fields = StatusController.class.getDeclaredFields();
         for (Field field : fields) {
             map.put(field.getName(), field.get(this).toString());
         }
-        return map;
+        return ResponseEntity.ok(new ApiSuccessResponse<HashMap>(map));
     }
 
 }
