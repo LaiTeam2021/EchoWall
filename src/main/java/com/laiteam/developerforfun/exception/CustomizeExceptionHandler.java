@@ -1,6 +1,6 @@
 package com.laiteam.developerforfun.exception;
 
-import com.laiteam.developerforfun.response.ApiErrorResponse;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -14,7 +14,6 @@ public class CustomizeExceptionHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<?> handleInvalidRequest(RuntimeException e, WebRequest request) {
         InvalidRequestException ire = (InvalidRequestException) e;
 
-
-        return ResponseEntity.badRequest().body(new ApiErrorResponse(ire.getErrorMessage()));
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ire.getMessage());
     }
 }
