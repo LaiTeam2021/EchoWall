@@ -1,14 +1,15 @@
 package com.laiteam.developerforfun.user;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService{
-    final
-    UserRepository userRepository;
+    final UserRepository userRepository;
 
+    @Autowired
     public UserServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
@@ -25,6 +26,6 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public Optional<User> findByEmail(String email) {
-        return Optional.ofNullable(userRepository.findByUsername(email));
+        return Optional.ofNullable(userRepository.findByEmail(email));
     }
 }

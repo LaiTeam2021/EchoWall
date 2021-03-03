@@ -1,8 +1,10 @@
-package com.laiteam.developerforfun.controller;
+package com.laiteam.developerforfun;
 
 import com.laiteam.developerforfun.exception.InvalidRequestException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -11,7 +13,7 @@ import java.lang.reflect.Field;
 import java.util.HashMap;
 
 @RestController
-public class StatusController {
+public class ServiceApi {
 
     @Value("${app.name}")
     private String name;
@@ -30,7 +32,7 @@ public class StatusController {
     @ResponseBody
     public ResponseEntity<?> environment() throws IllegalAccessException {
         HashMap<String, String> map = new HashMap<>();
-        Field[] fields = StatusController.class.getDeclaredFields();
+        Field[] fields = ServiceApi.class.getDeclaredFields();
         for (Field field : fields) {
             map.put(field.getName(), field.get(this).toString());
         }
@@ -42,6 +44,5 @@ public class StatusController {
     public ResponseEntity<?> error() {
         throw new InvalidRequestException("Error Message");
     }
-
 
 }
