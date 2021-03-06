@@ -26,3 +26,9 @@ CREATE TABLE IF NOT EXISTS profile (
   about_me TEXT
 );
 
+CREATE TABLE IF NOT EXISTS follow (
+    user_id BIGINT UNIQUE REFERENCES users (id),
+    follow_id BIGINT UNIQUE REFERENCES users (id),
+    create_date DATE
+);
+
