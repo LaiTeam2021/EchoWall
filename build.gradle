@@ -41,6 +41,9 @@ dependencies {
 // postgresql
     runtimeOnly 'org.postgresql:postgresql'
 
+// db migration
+    implementation('org.flywaydb:flyway-core')
+
 
 }
 

@@ -20,7 +20,7 @@ public class Profile {
     private Long userId;
     private String avatarUrl;
     @OneToOne
-    @JoinColumn(name="gender", referencedColumnName = "id")
+    @JoinColumn(name="gender_id", referencedColumnName = "id")
     private GenderType gender;
     private String residence;
     @Temporal(TemporalType.DATE)
