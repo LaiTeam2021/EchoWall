@@ -77,9 +77,20 @@ CREATE TABLE favorite_topics
     PRIMARY KEY (user_id, topic_id)
 );
 
+CREATE TABLE follow (
+    user_id BIGINT NOT NULL REFERENCES users (id),
+    follow_id BIGINT NOT NULL REFERENCES users (id),
+    create_date DATE NOT NULL DEFAULT NOW(),
+    PRIMARY KEY (user_id, follow_id)
+);
+
 -- users password 12345678
 INSERT INTO users(id, username, email, password)
 VALUES (1, 'test123', 'developerforfun2020@gmail.com', '$2a$10$NiRFezagti1J8Nk7uGwbKeIA8ADF14pM8OLS6gc5hU0Tf5gXo92Me');
+
+-- users password 123
+INSERT INTO users(id, username, email, password)
+VALUES (2, 'gary', 'garywangop@gmail.com', '$2a$10$JYZoHTnQFPS8daXXSkwXgOWD31HDRZz/2tYQDLzA.cEX3Y2jt6EO6');
 
 -- whitelist
 INSERT INTO whitelist(user_id)
@@ -120,3 +131,9 @@ INSERT INTO post_topics(post_id, topic_id)
 VALUES (1, 1);
 INSERT INTO post_topics(post_id, topic_id)
 VALUES (1, 2);
+
+-- follow
+INSERT INTO follow(user_id, follow_id)
+VALUES (1, 2);
+INSERT INTO follow(user_id, follow_id)
+VALUES (2, 1);

@@ -33,6 +33,7 @@ public class UserApi {
     public UserApi(UserService userService, EncryptService encryptService, JwtService jwtService) {
         this.userService = userService;
         this.encryptService = encryptService;
+        System.out.println(encryptService.encrypt("123"));
         this.jwtService = jwtService;
     }
 
