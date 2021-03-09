@@ -77,6 +77,14 @@ CREATE TABLE favorite_topics
     PRIMARY KEY (user_id, topic_id)
 );
 
+--favorite table
+CREATE TABLE IF NOT EXISTS favorite(
+    id BIGSERIAL PRIMARY KEY,
+    user_id BIGINT REFERENCES users(id),
+    post_id BIGINT REFERENCES post(id),
+    create_date TIMESTAMP NOT NULL DEFAULT NOW()
+);
+
 -- users password 12345678
 INSERT INTO users(id, username, email, password)
 VALUES (1, 'test123', 'developerforfun2020@gmail.com', '$2a$10$NiRFezagti1J8Nk7uGwbKeIA8ADF14pM8OLS6gc5hU0Tf5gXo92Me');
