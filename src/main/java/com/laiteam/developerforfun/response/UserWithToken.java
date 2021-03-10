@@ -3,12 +3,14 @@ package com.laiteam.developerforfun.response;
 import com.laiteam.developerforfun.user.User;
 import lombok.Getter;
 
+import java.sql.Timestamp;
+
 @Getter
 public class UserWithToken {
     private Long id;
     private String username;
     private String email;
-    private String createDate;
+    private Timestamp createDate;
     private boolean isActive;
     private String token;
 

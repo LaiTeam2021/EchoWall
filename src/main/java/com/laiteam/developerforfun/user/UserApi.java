@@ -19,6 +19,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
+import java.sql.Timestamp;
 import java.util.Optional;
 
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
@@ -49,6 +50,38 @@ public class UserApi {
         }
     }
 
+    @RequestMapping(path = "/users/password", method = POST)
+    public ResponseEntity<?> userResetPassword(@Valid @RequestBody ResetPasswordParam resetPasswordParam, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            throw new InvalidRequestException(ErrorUtil.getErrorMessage(bindingResult));
+        }
+        Optional<User> optional = userService.findByEmail(resetPasswordParam.getEmail());
+        String newPassword = resetPasswordParam.getNewPassword();
+        if(!optional.isPresent()){
+            throw new InvalidRequestException("No such user, please sign up first");
+        }else if(newPassword.equals("")){
+            throw new InvalidRequestException("password cannot be empty");
+        }else{
+            // reset password
+            User curUser = optional.get();
+            User userWithNewPassword = User.builder()
+                    .id((Long)curUser.getId())
+                    .username(curUser.getUsername())
+                    .createDate(curUser.getCreateDate())
+                    .email(curUser.getEmail())
+                    .password(encryptService.encrypt(newPassword))
+                    .isActive(curUser.isActive())
+                    .build();
+            userService.save(userWithNewPassword);
+            return ResponseEntity.ok("reset password successfully");
+        }
+//        if (optional.isPresent() && encryptService.check(loginParam.getPassword(), optional.get().getPassword())) {
+//            return ResponseEntity.ok(new UserWithToken(optional.get(), jwtService.toToken(optional.get())));
+//        } else {
+//            throw new InvalidRequestException("Invalid email or password");
+//        }
+    }
+
 }
 
 @Getter
@@ -60,4 +93,15 @@ class LoginParam {
     private String email;
     @NotBlank(message = "Password can't be empty")
     private String password;
+}
+
+@Getter
+@JsonRootName("user")
+@NoArgsConstructor
+class ResetPasswordParam {
+    @NotBlank(message = "Email can't be empty")
+    @Email(message = "should be an email")
+    private String email;
+    @NotBlank(message = "Password can't be empty")
+    private String newPassword;
 }
