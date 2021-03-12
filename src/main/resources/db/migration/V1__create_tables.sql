@@ -120,3 +120,9 @@ INSERT INTO post_topics(post_id, topic_id)
 VALUES (1, 1);
 INSERT INTO post_topics(post_id, topic_id)
 VALUES (1, 2);
+
+-- favorite_topics
+INSERT INTO favorite_topics(user_id, topic_id)
+VALUES (1, 1);
+INSERT INTO favorite_topics(user_id, topic_id)
+VALUES (1, 2);

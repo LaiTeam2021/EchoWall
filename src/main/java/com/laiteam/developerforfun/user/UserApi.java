@@ -5,6 +5,7 @@ import com.laiteam.developerforfun.encrypt.EncryptService;
 import com.laiteam.developerforfun.exception.InvalidRequestException;
 import com.laiteam.developerforfun.jwt.JwtService;
 import com.laiteam.developerforfun.response.UserWithToken;
+import com.laiteam.developerforfun.topics.TopicsService;
 import com.laiteam.developerforfun.util.ErrorUtil;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,12 +28,14 @@ public class UserApi {
     private final UserService userService;
     private final EncryptService encryptService;
     private final JwtService jwtService;
+    private final TopicsService topicsService;
 
     @Autowired
-    public UserApi(UserService userService, EncryptService encryptService, JwtService jwtService) {
+    public UserApi(UserService userService, EncryptService encryptService, JwtService jwtService, TopicsService topicsService) {
         this.userService = userService;
         this.encryptService = encryptService;
         this.jwtService = jwtService;
+        this.topicsService = topicsService;
     }
 
     @RequestMapping(path = "/users/login", method = POST)
@@ -42,7 +45,11 @@ public class UserApi {
         }
         Optional<User> optional = userService.findByEmail(loginParam.getEmail());
         if (optional.isPresent() && encryptService.check(loginParam.getPassword(), optional.get().getPassword())) {
-            return ResponseEntity.ok(new UserWithToken(optional.get(), jwtService.toToken(optional.get())));
+            UserWithToken userWithToken = new UserWithToken(optional.get(), jwtService.toToken(optional.get()));
+            if (loginParam.isHasTopics()) {
+                userWithToken.setTopics(topicsService.findTopicsByUserId(optional.get().getId()));
+            }
+            return ResponseEntity.ok(userWithToken);
         } else {
             throw new InvalidRequestException("Invalid email or password");
         }
@@ -84,4 +91,5 @@ class LoginParam {
     private String email;
     @NotBlank(message = "Password can't be empty")
     private String password;
+    private boolean hasTopics;
 }

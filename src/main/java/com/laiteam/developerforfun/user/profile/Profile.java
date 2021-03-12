@@ -15,7 +15,6 @@ import java.util.Date;
 @Table(name = "profile")
 public class Profile {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
     private Long userId;
     private String avatarUrl;

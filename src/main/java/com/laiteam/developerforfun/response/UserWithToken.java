@@ -1,10 +1,12 @@
 package com.laiteam.developerforfun.response;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.laiteam.developerforfun.topics.entity.Topic;
 import com.laiteam.developerforfun.user.User;
 import lombok.Getter;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 @Getter
 public class UserWithToken {
@@ -15,6 +17,7 @@ public class UserWithToken {
     private Timestamp createDate;
     private boolean isActive;
     private String token;
+    private List<Topic> topics;
 
     public UserWithToken(User user, String token) {
         this.email = user.getEmail();
@@ -23,6 +26,10 @@ public class UserWithToken {
         this.createDate = user.getCreateDate();
         this.isActive = user.isActive();
         this.token = token;
+    }
+
+    public void setTopics(List<Topic> topics) {
+        this.topics = topics;
     }
 
 }
