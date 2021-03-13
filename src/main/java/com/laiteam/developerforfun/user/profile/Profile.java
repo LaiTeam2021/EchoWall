@@ -1,16 +1,16 @@
 package com.laiteam.developerforfun.user.profile;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
-@Getter
-@Setter
 @EqualsAndHashCode(of = {"id"})
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@Setter
+@Getter
 @Entity
 @Table(name = "profile")
 public class Profile {

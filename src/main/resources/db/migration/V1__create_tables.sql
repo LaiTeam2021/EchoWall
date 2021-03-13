@@ -78,42 +78,42 @@ CREATE TABLE favorite_topics
 );
 
 -- users password 12345678
-INSERT INTO users(id, username, email, password)
-VALUES (1, 'test123', 'developerforfun2020@gmail.com', '$2a$10$NiRFezagti1J8Nk7uGwbKeIA8ADF14pM8OLS6gc5hU0Tf5gXo92Me');
+INSERT INTO users(username, email, password)
+VALUES ('test123', 'developerforfun2020@gmail.com', '$2a$10$NiRFezagti1J8Nk7uGwbKeIA8ADF14pM8OLS6gc5hU0Tf5gXo92Me');
 
 -- whitelist
 INSERT INTO whitelist(user_id)
 VALUES (1);
 
 -- gender_type
-INSERT INTO gender_type(id, gender)
-VALUES (1, 'male');
-INSERT INTO gender_type(id, gender)
-VALUES (2, 'female');
+INSERT INTO gender_type(gender)
+VALUES ('male');
+INSERT INTO gender_type(gender)
+VALUES ('female');
 
 -- profile
-INSERT INTO profile(id, user_id, avatar_url, gender_id, dob)
-VALUES (1, 1, 'https://pa1.narvii.com/6404/35b2929ca438e295554d2460707145d35456f2c2_128.gif', 1, '5/26/1991');
+INSERT INTO profile(user_id, avatar_url, gender_id, dob)
+VALUES (1, 'https://pa1.narvii.com/6404/35b2929ca438e295554d2460707145d35456f2c2_128.gif', 1, '5/26/1991');
 
 -- post_type
-INSERT INTO post_type(id, type)
-VALUES (1, 'normal');
-INSERT INTO post_type(id, type)
-VALUES (2, 'anonymous');
+INSERT INTO post_type(type)
+VALUES ('normal');
+INSERT INTO post_type(type)
+VALUES ('anonymous');
 
 -- topic
-INSERT INTO topic(id, name, name_cn)
-VALUES (1, 'wandering', '灌水');
-INSERT INTO topic(id, name, name_cn)
-VALUES (2, 'job', '职场');
-INSERT INTO topic(id, name, name_cn)
-VALUES (3, 'campus', '校园');
-INSERT INTO topic(id, name, name_cn)
-VALUES (4, 'immigration', '移民');
+INSERT INTO topic(name, name_cn)
+VALUES ('wandering', '灌水');
+INSERT INTO topic(name, name_cn)
+VALUES ('job', '职场');
+INSERT INTO topic(name, name_cn)
+VALUES ('campus', '校园');
+INSERT INTO topic(name, name_cn)
+VALUES ('immigration', '移民');
 
 -- post
-INSERT INTO post(id, user_id, title, context, post_type_id)
-VALUES (1, 1, '第一灌水', '<b>呀呀呀</b 测试水贴', 1);
+INSERT INTO post(user_id, title, context, post_type_id)
+VALUES (1, '第一灌水', '<b>呀呀呀</b 测试水贴', 1);
 
 -- post_topic
 INSERT INTO post_topics(post_id, topic_id)
