@@ -8,9 +8,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.servlet.function.EntityResponse;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.function.Supplier;
 
@@ -33,15 +31,10 @@ public class ProfileApi {
     //TODO("Just an example")
     @GetMapping(path = "/profile/save")
     public ResponseEntity<?> saveProfile(@AuthenticationPrincipal User user) {
-        Profile profile = new Profile();
         GenderType genderType = new GenderType();
         genderType.setId(1L);
-        profile.setId(1L);
-        profile.setUserId(1L);
-        profile.setAvatarUrl("https://pa1.narvii.com/6404/35b2929ca438e295554d2460707145d35456f2c2_128.gif");
-        profile.setDob(new Date());
-        profile.setAboutMe("Lazy man");
-        profile.setGender(genderType);
+        Profile profile = Profile.builder().id(1L).userId(1L).avatarUrl("https://pa1.narvii.com/6404/35b2929ca438e295554d2460707145d35456f2c2_128.gif")
+                .dob(new Date()).aboutMe("Lazy Man").gender(genderType).build();
         return ResponseEntity.ok(profileRepository.save(profile));
     }
 

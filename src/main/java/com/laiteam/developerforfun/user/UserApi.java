@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-
 import java.util.Optional;
 
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
@@ -49,6 +48,31 @@ public class UserApi {
         }
     }
 
+    @RequestMapping(path = "/users/register", method = POST)
+    public ResponseEntity<?> userRegister(@Valid @RequestBody RegisterParam registerParam, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            throw new InvalidRequestException(ErrorUtil.getErrorMessage(bindingResult));
+        }
+
+        //TODO check deduplicate
+        User user = User.builder().email(registerParam.getEmail()).password(registerParam.getPassword()).username(registerParam.getUsername()).
+                isActive(true).build();
+        Optional<User> optional = userService.saveUser(user);
+        return ResponseEntity.ok(new UserWithToken(optional.get(), jwtService.toToken(optional.get())));
+    }
+}
+
+@Getter
+@JsonRootName("user")
+@NoArgsConstructor
+class RegisterParam {
+    @NotBlank(message = "Email can't be empty")
+    @Email(message = "should be an email")
+    private String email;
+    @NotBlank(message = "Username can't be empty")
+    private String username;
+    @NotBlank(message = "Password can't be empty")
+    private String password;
 }
 
 @Getter

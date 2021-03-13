@@ -1,14 +1,18 @@
 package com.laiteam.developerforfun.response;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.laiteam.developerforfun.user.User;
 import lombok.Getter;
+
+import java.sql.Timestamp;
 
 @Getter
 public class UserWithToken {
     private Long id;
     private String username;
     private String email;
-    private String createDate;
+    @JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss")
+    private Timestamp createDate;
     private boolean isActive;
     private String token;
 
