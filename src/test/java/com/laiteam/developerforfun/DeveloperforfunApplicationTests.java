@@ -20,4 +20,8 @@ class DeveloperforfunApplicationTests {
         System.out.println("加密 = " + encryptor.encrypt("test"));
     }
 
+    void contextLoads() {
+        System.out.println("test");
+    }
+
 }
