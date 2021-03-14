@@ -8,9 +8,8 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.servlet.function.EntityResponse;
+import com.laiteam.developerforfun.user.gender.GenderType;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.function.Supplier;
 
@@ -41,7 +40,7 @@ public class ProfileApi {
         profile.setAvatarUrl("https://pa1.narvii.com/6404/35b2929ca438e295554d2460707145d35456f2c2_128.gif");
         profile.setDob(new Date());
         profile.setAboutMe("Lazy man");
-        profile.setGender(genderType);
+//        profile.setGender(genderType);
         return ResponseEntity.ok(profileRepository.save(profile));
     }
 
