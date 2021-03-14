@@ -1,5 +1,6 @@
 package com.laiteam.developerforfun.user;
 
+import com.laiteam.developerforfun.encrypt.EncryptService;
 import com.laiteam.developerforfun.user.profile.Profile;
 import com.laiteam.developerforfun.user.profile.ProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,11 +16,13 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService{
     final UserRepository userRepository;
     final ProfileService profileService;
+    final EncryptService encryptService;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, ProfileService profileService) {
+    public UserServiceImpl(UserRepository userRepository, ProfileService profileService, EncryptService encryptService) {
         this.userRepository = userRepository;
         this.profileService = profileService;
+        this.encryptService = encryptService;
     }
 
     @Override
@@ -42,7 +45,7 @@ public class UserServiceImpl implements UserService{
 
         User user = User.builder()
                 .email(registerParam.getEmail())
-                .password(registerParam.getPassword())
+                .password(encryptService.encrypt(registerParam.getPassword()))
                 .username(registerParam.getUsername())
                 .createDate(new Timestamp(new Date().getTime()))
                 .isActive(true)

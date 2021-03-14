@@ -4,8 +4,7 @@ import com.laiteam.developerforfun.user.RegisterParam;
 import com.laiteam.developerforfun.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.laiteam.developerforfun.user.gender.GenderType;
-import com.laiteam.developerforfun.user.gender.GenderService;
+import com.laiteam.developerforfun.user.GenderType;
 
 import java.util.Date;
 import java.util.Optional;
@@ -13,12 +12,10 @@ import java.util.Optional;
 @Service
 public class ProfileServiceImpl implements ProfileService {
     private final ProfileRepository profileRepository;
-    private final GenderService genderService;
 
     @Autowired
-    public ProfileServiceImpl(ProfileRepository profileRepository, GenderService genderService) {
+    public ProfileServiceImpl(ProfileRepository profileRepository) {
         this.profileRepository = profileRepository;
-        this.genderService = genderService;
     }
 
     @Override

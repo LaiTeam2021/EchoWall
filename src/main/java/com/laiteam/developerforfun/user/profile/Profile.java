@@ -4,7 +4,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.util.Date;
-import com.laiteam.developerforfun.user.gender.GenderType;
+import com.laiteam.developerforfun.user.GenderType;
 
 
 @EqualsAndHashCode(of = {"id"})

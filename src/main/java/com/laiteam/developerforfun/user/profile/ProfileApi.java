@@ -8,7 +8,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import com.laiteam.developerforfun.user.gender.GenderType;
+import com.laiteam.developerforfun.user.GenderType;
 
 import java.util.Date;
 import java.util.function.Supplier;
