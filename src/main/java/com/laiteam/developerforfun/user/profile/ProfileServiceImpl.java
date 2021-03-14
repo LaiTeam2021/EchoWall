@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import com.laiteam.developerforfun.user.gender.GenderType;
 import com.laiteam.developerforfun.user.gender.GenderService;
 
+import java.util.Date;
 import java.util.Optional;
 
 @Service
@@ -33,16 +34,19 @@ public class ProfileServiceImpl implements ProfileService {
     @Override
     public Optional<Profile> register(RegisterParam registerParam, User user) {
 
-        Profile profile = new Profile();
-        profile.setUserId(user.getId());
+        GenderType genderType = GenderType.builder()
+                .id(Long.parseLong(registerParam.getGender()))
+                .build();
 
-        //create gender
-        GenderType gender = new GenderType();
-        gender.setId(1L);
+        Profile profile = Profile.builder()
+                .userId(user.getId())
+                .gender(genderType)
+                .residence(registerParam.getLocation())
+                .avatarUrl("https://pa1.narvii.com/6404/35b2929ca438e295554d2460707145d35456f2c2_128.gif")
+                .dob(new Date())
+                .aboutMe("Lazy Man")
+                .build();
 
-        profile.setGender(gender);
-        profile.setResidence(registerParam.getLocation());
         return Optional.ofNullable(profileRepository.save(profile));
-//        return Optional.empty();
     }
 }

@@ -5,6 +5,7 @@ import com.laiteam.developerforfun.user.profile.ProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -38,18 +39,14 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public Optional<User> register(RegisterParam registerParam) {
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
 
-        User user = new User();
-        user.setUsername(registerParam.getUsername());
-        user.setEmail(registerParam.getEmail());
-        user.setCreateDate(new Date());
-        user.setPassword(registerParam.getPassword());
-
-//        Profile profile = new Profile();
-//        profile.setUserId(user.getUsername());
-//        profile.setGender(1);
-//        profileService.saveProfile(profile);
+        User user = User.builder()
+                .email(registerParam.getEmail())
+                .password(registerParam.getPassword())
+                .username(registerParam.getUsername())
+                .createDate(new Timestamp(new Date().getTime()))
+                .isActive(true)
+                .build();
 
         return Optional.ofNullable(userRepository.save(user));
     }

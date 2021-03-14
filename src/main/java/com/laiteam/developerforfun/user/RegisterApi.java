@@ -39,23 +39,20 @@ public class RegisterApi {
         this.jwtService = jwtService;
     }
 
-    @PostMapping("/users/register")
-    public ResponseEntity<?> saveUser(@Valid @RequestBody RegisterParam registerParam) {
-        Optional<User> user_in = userService.findByEmail(registerParam.getEmail());
-
-        if (user_in.isPresent()) {
-            throw new InvalidRequestException("email has been used");
-        }
-
-//        Check empty put in frontend
-//        if (user.getUsername().isEmpty() || user.getEmail().isEmpty() || user.getPassword().isEmpty()) {
-//            throw new InvalidRequestException("Please fill in all the details");
+//    @PostMapping("/users/register")
+//    public ResponseEntity<?> saveUser(@Valid @RequestBody RegisterParam registerParam) {
+//        Optional<User> user_in = userService.findByEmail(registerParam.getEmail());
+//
+//        if (userService.findByUserName(registerParam.getUsername()).isPresent()) {
+//            throw new InvalidRequestException("Username exists");
+//        } else if (user_in.isPresent()) {
+//            throw new InvalidRequestException("email has been used");
 //        }
-
-        Optional<User> user = userService.register(registerParam);
-
-        Optional<Profile> profile = profileService.register(registerParam, user.get());
-
-        return ResponseEntity.ok(user);
-    }
+//
+//        Optional<User> user = userService.register(registerParam);
+//
+//        Optional<Profile> profile = profileService.register(registerParam, user.get());
+//
+//        return ResponseEntity.ok(user);
+//    }
 }

@@ -32,8 +32,9 @@ public class ProfileApi {
     //TODO("Just an example")
     @GetMapping(path = "/profile/save")
     public ResponseEntity<?> saveProfile(@AuthenticationPrincipal User user) {
-        GenderType genderType = new GenderType();
-        genderType.setId(1L);
+        GenderType genderType = GenderType.builder()
+                .id(1L)
+                .build();
         Profile profile = Profile.builder().id(1L).userId(1L).avatarUrl("https://pa1.narvii.com/6404/35b2929ca438e295554d2460707145d35456f2c2_128.gif")
                 .dob(new Date()).aboutMe("Lazy Man").gender(genderType).build();
         return ResponseEntity.ok(profileRepository.save(profile));
