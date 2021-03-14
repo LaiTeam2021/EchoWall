@@ -1,4 +1,4 @@
-package com.laiteam.developerforfun.user.profile;
+package com.laiteam.developerforfun.user.gender;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -14,7 +14,8 @@ import javax.persistence.*;
 public class GenderType {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    @Column(columnDefinition = "bigserial")
     private Long id;
     private String gender;
 }

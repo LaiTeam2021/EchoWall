@@ -9,6 +9,5 @@ public interface UserService {
 
     Optional<User> findByEmail(String email);
 
-    Optional<User> saveUser(User user);
-
+    Optional<User> register(RegisterParam registerParam);
 }

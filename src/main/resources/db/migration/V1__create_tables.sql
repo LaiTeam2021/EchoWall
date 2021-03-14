@@ -1,3 +1,6 @@
+CREATE SEQUENCE user_sequence START with 10001 increment by 1;
+CREATE SEQUENCE profile_sequence START with 10001 increment by 1;
+
 CREATE TABLE users
 (
     id          BIGSERIAL PRIMARY KEY,
@@ -15,8 +18,8 @@ CREATE TABLE whitelist
 
 CREATE TABLE gender_type
 (
-    id     SERIAL PRIMARY KEY,
-    gender VARCHAR(50) UNIQUE NOT NULL
+    id     BIGSERIAL PRIMARY KEY,
+    gender VARCHAR(50) NOT NULL
 );
 
 CREATE TABLE profile

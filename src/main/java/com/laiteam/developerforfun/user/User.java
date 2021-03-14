@@ -15,6 +15,9 @@ import java.sql.Timestamp;
 @Getter
 @Entity
 @Table(name = "users")
+@SequenceGenerator(
+        name="user_seq",
+        sequenceName="user_sequence", allocationSize = 1, initialValue = 10001)
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,5 +29,4 @@ public class User {
     @JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss")
     private Timestamp createDate;
     private boolean isActive;
-
 }
