@@ -1,0 +1,22 @@
+dependencies {
+
+    implementation 'junit:junit:4.12'
+    implementation project(":dal")
+    implementation project(":service")
+    implementation project(":common")
+
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
+
+    // application password encryption
+    implementation('com.github.ulisesbocchio:jasypt-spring-boot-starter:3.0.3')
+
+}
+
+test {
+    useJUnitPlatform()
+}
+

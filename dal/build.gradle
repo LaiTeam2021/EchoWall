@@ -1,0 +1,10 @@
+dependencies {
+    implementation project(":common")
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    // postgresql
+    runtimeOnly 'org.postgresql:postgresql'
+    implementation("com.h2database:h2")
+
+    // db migration
+    implementation('org.flywaydb:flyway-core')
+}

@@ -1,0 +1,7 @@
+rootProject.name = 'EchoWall'
+include 'dal'
+include 'common'
+include 'http-service'
+include 'service'
+include 'sal'
+

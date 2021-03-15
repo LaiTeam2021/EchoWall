@@ -1,0 +1,41 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath('org.springframework.boot:spring-boot-gradle-plugin:2.4.2')
+    }
+}
+
+allprojects {
+    group 'com.laiteam'
+    version '1.0-SNAPSHOT'
+    apply plugin: 'java-library'
+    sourceCompatibility = 8
+    targetCompatibility = 8
+}
+
+subprojects {
+    apply plugin: 'org.springframework.boot'
+    apply plugin: 'io.spring.dependency-management'
+    apply plugin: 'java'
+    // 指定编码格式
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        //  springboot framework
+        implementation 'org.springframework.boot:spring-boot-starter'
+
+        //  Quick Annotation
+        compileOnly 'org.projectlombok:lombok'
+        annotationProcessor 'org.projectlombok:lombok'
+
+    }
+    configurations {
+        compileOnly {
+            extendsFrom annotationProcessor
+        }
+    }
+}
