@@ -5,6 +5,4 @@ dependencies {
     runtimeOnly 'org.postgresql:postgresql'
     implementation("com.h2database:h2")
 
-    // db migration
-    implementation('org.flywaydb:flyway-core')
 }

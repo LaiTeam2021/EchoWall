@@ -13,7 +13,8 @@ dependencies {
 
     // application password encryption
     implementation('com.github.ulisesbocchio:jasypt-spring-boot-starter:3.0.3')
-
+    // db migration
+    implementation('org.flywaydb:flyway-core')
 }
 
 test {
