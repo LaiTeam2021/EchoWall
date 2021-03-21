@@ -25,6 +25,7 @@ build/*
 dal/build/
 http-service/build/
 sal/build/
+sal/src/main/resources/*
 service/build/
 common/build/
 
