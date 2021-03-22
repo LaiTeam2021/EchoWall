@@ -66,6 +66,13 @@ CREATE TABLE favorite_topics
     PRIMARY KEY (user_id, topic_id)
 );
 
+CREATE TABLE follow (
+    user_id BIGINT NOT NULL REFERENCES users (id),
+    follow_id BIGINT NOT NULL REFERENCES users (id),
+    create_date TIMESTAMP NOT NULL DEFAULT NOW(),
+    PRIMARY KEY (user_id, follow_id)
+);
+
 -- users password 12345678
 INSERT INTO users(username, email, password)
 VALUES ('test123', 'developerforfun2020@gmail.com', '$2a$10$NiRFezagti1J8Nk7uGwbKeIA8ADF14pM8OLS6gc5hU0Tf5gXo92Me');
