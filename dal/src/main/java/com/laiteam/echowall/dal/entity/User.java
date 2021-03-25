@@ -23,5 +23,6 @@ public class User {
     private String password;
     @CreationTimestamp
     private Timestamp createDate;
+    @Column(insertable = false)
     private boolean isActive;
 }

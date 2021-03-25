@@ -22,6 +22,7 @@ CREATE TABLE gender_type
 CREATE TABLE profile
 (
     id         BIGSERIAL PRIMARY KEY,
+    nick_name  VARCHAR(512),
     user_id    BIGINT NOT NULL UNIQUE REFERENCES users (id),
     avatar_url VARCHAR(512),
     gender_id  int    NOT NULL REFERENCES gender_type (id),
@@ -92,8 +93,8 @@ INSERT INTO gender_type(gender)
 VALUES ('female');
 
 -- profile
-INSERT INTO profile(user_id, avatar_url, gender_id, dob)
-VALUES (1, 'https://pa1.narvii.com/6404/35b2929ca438e295554d2460707145d35456f2c2_128.gif', 1, '5/26/1991');
+INSERT INTO profile(user_id, nick_name, avatar_url, gender_id, dob)
+VALUES (1, 'tim', 'https://pa1.narvii.com/6404/35b2929ca438e295554d2460707145d35456f2c2_128.gif', 1, '5/26/1991');
 
 -- post_type
 INSERT INTO post_type(type)

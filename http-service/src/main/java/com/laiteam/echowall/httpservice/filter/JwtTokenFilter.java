@@ -1,13 +1,13 @@
 package com.laiteam.echowall.httpservice.filter;
 
+import com.laiteam.echowall.dal.entity.User;
+import com.laiteam.echowall.service.JwtService;
+import com.laiteam.echowall.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.web.filter.OncePerRequestFilter;
-import com.laiteam.echowall.service.JwtService;
-import com.laiteam.echowall.service.UserService;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -31,7 +31,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
         getTokenString(request.getHeader(header)).ifPresent(token -> {
             jwtService.getSubFromToken(token).ifPresent(id -> {
                 if (SecurityContextHolder.getContext().getAuthentication() == null) {
-                    userService.findById(Long.parseLong(id)).ifPresent(user -> {
+                    userService.findUser(User.builder().id(Long.parseLong(id)).build()).ifPresent(user -> {
                         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
                                 user,
                                 null,
