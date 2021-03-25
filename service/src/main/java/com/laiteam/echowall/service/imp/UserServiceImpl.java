@@ -3,9 +3,13 @@ package com.laiteam.echowall.service.imp;
 import com.laiteam.echowall.dal.entity.User;
 import com.laiteam.echowall.dal.repository.UserRepository;
 import com.laiteam.echowall.service.UserService;
+import com.laiteam.echowall.service.util.OptionalUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -18,22 +22,22 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Optional<User> findById(Long id) {
-        return userRepository.findById(id);
-    }
-
-    @Override
-    public Optional<User> findByUserName(String username) {
-        return Optional.ofNullable(userRepository.findByUsername(username));
-    }
-
-    @Override
-    public Optional<User> findByEmail(String email) {
-        return Optional.ofNullable(userRepository.findByEmail(email));
+    public Optional<User> findUser(User user) {
+        List<User> users = userRepository.findAll(Example.of(user,getUserMatcher()));
+        return OptionalUtils.getFirstNullableItem(users);
     }
 
     @Override
     public Optional<User> saveUser(User user) {
         return Optional.ofNullable(userRepository.save(user));
+    }
+
+    @Override
+    public ExampleMatcher getUserMatcher() {
+        return ExampleMatcher.matchingAny().
+                withIgnorePaths("password").
+                withIgnorePaths("createDate").
+                withIgnorePaths("isActive").
+                withIgnoreNullValues();
     }
 }

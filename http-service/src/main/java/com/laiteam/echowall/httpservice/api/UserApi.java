@@ -1,10 +1,13 @@
 package com.laiteam.echowall.httpservice.api;
 
-import com.fasterxml.jackson.annotation.JsonRootName;
 import com.laiteam.echowall.common.exception.InvalidRequestException;
 import com.laiteam.echowall.common.util.ErrorUtil;
+import com.laiteam.echowall.dal.entity.GenderType;
+import com.laiteam.echowall.dal.entity.Profile;
 import com.laiteam.echowall.dal.entity.User;
-import com.laiteam.echowall.httpservice.response.UserWithToken;
+import com.laiteam.echowall.httpservice.response.TopicResponse;
+import com.laiteam.echowall.httpservice.response.UserResponse;
+import com.laiteam.echowall.service.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,10 +16,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.laiteam.echowall.service.EncryptService;
-import com.laiteam.echowall.service.JwtService;
-import com.laiteam.echowall.service.TopicsService;
-import com.laiteam.echowall.service.UserService;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Email;
@@ -28,13 +27,19 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 @RestController
 public class UserApi {
     private final UserService userService;
+    private final ProfileService profileService;
     private final EncryptService encryptService;
     private final JwtService jwtService;
     private final TopicsService topicsService;
 
     @Autowired
-    public UserApi(UserService userService, EncryptService encryptService, JwtService jwtService, TopicsService topicsService) {
+    public UserApi(UserService userService,
+                   ProfileService profileService,
+                   EncryptService encryptService,
+                   JwtService jwtService,
+                   TopicsService topicsService) {
         this.userService = userService;
+        this.profileService = profileService;
         this.encryptService = encryptService;
         this.jwtService = jwtService;
         this.topicsService = topicsService;
@@ -45,13 +50,11 @@ public class UserApi {
         if (bindingResult.hasErrors()) {
             throw new InvalidRequestException(ErrorUtil.getErrorMessage(bindingResult));
         }
-        Optional<User> optional = userService.findByEmail(loginParam.getEmail());
+        Optional<User> optional = userService.findUser(User.builder().email(loginParam.getEmail()).build());
         if (optional.isPresent() && encryptService.check(loginParam.getPassword(), optional.get().getPassword())) {
-            UserWithToken userWithToken = new UserWithToken(optional.get(), jwtService.toToken(optional.get()));
-            if (loginParam.isHasTopics()) {
-                userWithToken.setTopics(topicsService.findTopicsByUserId(optional.get().getId()));
-            }
-            return ResponseEntity.ok(userWithToken);
+            User user = optional.get();
+            UserResponse userResponse = createUserResponse(user, loginParam.isHasTopics());
+            return ResponseEntity.ok(userResponse);
         } else {
             throw new InvalidRequestException("Invalid email or password");
         }
@@ -63,29 +66,42 @@ public class UserApi {
             throw new InvalidRequestException(ErrorUtil.getErrorMessage(bindingResult));
         }
 
-        //TODO check deduplicate
-        User user = User.builder().email(registerParam.getEmail()).password(registerParam.getPassword()).username(registerParam.getUsername()).
-                isActive(true).build();
+        User user = User.builder().email(registerParam.getEmail())
+                .password(encryptService.encrypt(registerParam.getPassword()))
+                .username(registerParam.getUsername()).build();
+        if (userService.findUser(user).isPresent()) {
+            throw new InvalidRequestException("Either username or email has been registered");
+        }
+
         Optional<User> optional = userService.saveUser(user);
-        return ResponseEntity.ok(new UserWithToken(optional.get(), jwtService.toToken(optional.get())));
+        if (!optional.isPresent()) {
+            throw new InvalidRequestException("Internal system error");
+        } else {
+            profileService.saveProfile(Profile.builder().user(optional.get()).
+                    gender(GenderType.builder().id(1L).build()).build());
+        }
+        UserResponse userResponse = createUserResponse(optional.get(), registerParam.isHasTopics());
+        return ResponseEntity.ok(userResponse);
+    }
+
+    private UserResponse createUserResponse(User user, boolean hasTopics) {
+        UserResponse.UserResponseBuilder responseBuilder = UserResponse.builder()
+                .token(jwtService.toToken(user));
+        if (hasTopics) {
+            responseBuilder.topics(TopicResponse.convertTopicLists(topicsService.findTopicsByUserId(user.getId())));
+        }
+        return responseBuilder.build();
     }
 }
 
 @Getter
-@JsonRootName("user")
 @NoArgsConstructor
-class RegisterParam {
-    @NotBlank(message = "Email can't be empty")
-    @Email(message = "should be an email")
-    private String email;
+class RegisterParam extends LoginParam {
     @NotBlank(message = "Username can't be empty")
     private String username;
-    @NotBlank(message = "Password can't be empty")
-    private String password;
 }
 
 @Getter
-@JsonRootName("user")
 @NoArgsConstructor
 class LoginParam {
     @NotBlank(message = "Email can't be empty")

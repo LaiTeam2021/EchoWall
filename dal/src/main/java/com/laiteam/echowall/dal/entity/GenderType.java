@@ -1,13 +1,13 @@
 package com.laiteam.echowall.dal.entity;
 
+import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.Setter;
 
 import javax.persistence.*;
 
 @Getter
-@Setter
+@Builder
 @EqualsAndHashCode(of = {"id"})
 @Entity
 @Table(name = "gender_type")
