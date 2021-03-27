@@ -19,6 +19,9 @@ public class DefaultJwtServiceImp implements JwtService {
     private String secret;
     private int sessionTime;
 
+    private long DEFAULT_EXPIRATION_TIME = 86400000; // 1 day
+    private long VERIFICATION_CODE_EXPIRATION_TIME = 900000; // 15min
+
     @Autowired
     public DefaultJwtServiceImp(@Value("${jwt.secret}") String secret,
                                 @Value("${jwt.sessionTime}") int sessionTime) {
@@ -30,7 +33,16 @@ public class DefaultJwtServiceImp implements JwtService {
     public String toToken(User user) {
         return Jwts.builder()
                 .setSubject(String.valueOf(user.getId()))
-                .setExpiration(expireTimeFromNow())
+                .setExpiration(expireTimeFromNow(DEFAULT_EXPIRATION_TIME))
+                .signWith(SignatureAlgorithm.HS512, secret)
+                .compact();
+    }
+
+    @Override
+    public String to15MinToken(User user) {
+        return Jwts.builder()
+                .setSubject(String.valueOf(user.getId()))
+                .setExpiration(expireTimeFromNow(VERIFICATION_CODE_EXPIRATION_TIME))
                 .signWith(SignatureAlgorithm.HS512, secret)
                 .compact();
     }
@@ -45,7 +57,7 @@ public class DefaultJwtServiceImp implements JwtService {
         }
     }
 
-    private Date expireTimeFromNow() {
-        return new Date(System.currentTimeMillis() + sessionTime * 1000);
+    private Date expireTimeFromNow(long milliSeconds) {
+        return new Date(System.currentTimeMillis() + milliSeconds);
     }
 }
