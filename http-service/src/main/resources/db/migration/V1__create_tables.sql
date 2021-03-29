@@ -13,28 +13,16 @@ CREATE TABLE whitelist
     user_id BIGINT UNIQUE NOT NULL REFERENCES users (id)
 );
 
-CREATE TABLE gender_type
-(
-    id     SERIAL PRIMARY KEY,
-    gender VARCHAR(50) UNIQUE NOT NULL
-);
-
 CREATE TABLE profile
 (
     id         BIGSERIAL PRIMARY KEY,
     nick_name  VARCHAR(512),
-    user_id    BIGINT NOT NULL UNIQUE REFERENCES users (id),
+    user_id    BIGINT      NOT NULL UNIQUE REFERENCES users (id),
     avatar_url VARCHAR(512),
-    gender_id  int    NOT NULL REFERENCES gender_type (id),
-    residence  TEXT DEFAULT 'Mars',
+    gender     VARCHAR(10) NOT NULL DEFAULT 'MALE',
+    residence  TEXT                 DEFAULT 'Mars',
     dob        DATE,
     about_me   TEXT
-);
-
-CREATE TABLE post_type
-(
-    id   SERIAL PRIMARY KEY,
-    type VARCHAR(50) UNIQUE NOT NULL
 );
 
 CREATE TABLE topic
@@ -54,14 +42,14 @@ CREATE TABLE location
 
 CREATE TABLE post
 (
-    id           BIGSERIAL PRIMARY KEY,
-    user_id      BIGINT NOT NULL REFERENCES users (id),
-    title        TEXT   NOT NULL,
-    context      TEXT   NOT NULL,
-    create_date  TIMESTAMP       NOT NULL DEFAULT NOW(),
-    location_id  BIGINT REFERENCES location (id),
-    post_type_id BIGINT NOT NULL REFERENCES post_type (id),
-    is_deleted   BOOLEAN         DEFAULT FALSE
+    id          BIGSERIAL PRIMARY KEY,
+    user_id     BIGINT      NOT NULL REFERENCES users (id),
+    title       TEXT        NOT NULL,
+    context     TEXT        NOT NULL,
+    create_date TIMESTAMP   NOT NULL DEFAULT NOW(),
+    location_id BIGINT REFERENCES location (id),
+    post_type   VARCHAR(20) NOT NULL DEFAULT 'NORMAL',
+    is_deleted  BOOLEAN              DEFAULT FALSE
 );
 
 CREATE TABLE post_topics
@@ -86,21 +74,9 @@ VALUES ('test123', 'developerforfun2020@gmail.com', '$2a$10$NiRFezagti1J8Nk7uGwb
 INSERT INTO whitelist(user_id)
 VALUES (1);
 
--- gender_type
-INSERT INTO gender_type(gender)
-VALUES ('male');
-INSERT INTO gender_type(gender)
-VALUES ('female');
-
 -- profile
-INSERT INTO profile(user_id, nick_name, avatar_url, gender_id, dob)
-VALUES (1, 'tim', 'https://pa1.narvii.com/6404/35b2929ca438e295554d2460707145d35456f2c2_128.gif', 1, '5/26/1991');
-
--- post_type
-INSERT INTO post_type(type)
-VALUES ('normal');
-INSERT INTO post_type(type)
-VALUES ('anonymous');
+INSERT INTO profile(user_id, nick_name, avatar_url, dob)
+VALUES (1, 'tim', 'https://pa1.narvii.com/6404/35b2929ca438e295554d2460707145d35456f2c2_128.gif', '5/26/1991');
 
 -- topic
 INSERT INTO topic(name, name_cn)
@@ -113,8 +89,8 @@ INSERT INTO topic(name, name_cn)
 VALUES ('immigration', '移民');
 
 -- post
-INSERT INTO post(user_id, title, context, post_type_id)
-VALUES (1, '第一灌水', '<b>呀呀呀</b 测试水贴', 1);
+INSERT INTO post(user_id, title, context)
+VALUES (1, '第一灌水', '<b>呀呀呀</b 测试水贴');
 
 -- post_topic
 INSERT INTO post_topics(post_id, topic_id)

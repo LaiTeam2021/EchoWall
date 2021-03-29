@@ -1,8 +1,6 @@
 package com.laiteam.echowall.dal.entity;
 
 import lombok.*;
-import org.hibernate.annotations.ColumnDefault;
-import org.springframework.data.annotation.CreatedBy;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -24,9 +22,8 @@ public class Profile {
     @JoinColumn(name="user_id", referencedColumnName = "id")
     private User user;
     private String avatarUrl;
-    @OneToOne
-    @JoinColumn(name="gender_id", referencedColumnName = "id")
-    private GenderType gender;
+    @Enumerated(EnumType.STRING)
+    private Gender gender = Gender.MALE;
     @Column(insertable = false)
     private String residence;
     @Temporal(TemporalType.DATE)

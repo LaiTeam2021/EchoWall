@@ -24,5 +24,5 @@ public class User {
     @CreationTimestamp
     private Timestamp createDate;
     @Column(insertable = false)
-    private boolean isActive;
+    private Boolean isActive;
 }

@@ -11,11 +11,13 @@ import java.util.List;
 
 @Service
 public class TopicsServiceImpl implements TopicsService {
+
     private final FavoriteTopicsRepository favoriteTopicsRepository;
     private final TopicRepository topicRepository;
 
     @Autowired
-    public TopicsServiceImpl(FavoriteTopicsRepository favoriteTopicsRepository, TopicRepository topicRepository) {
+    public TopicsServiceImpl(FavoriteTopicsRepository favoriteTopicsRepository,
+      TopicRepository topicRepository) {
         this.favoriteTopicsRepository = favoriteTopicsRepository;
         this.topicRepository = topicRepository;
     }

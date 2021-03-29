@@ -14,6 +14,7 @@ import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
+
     final UserRepository userRepository;
 
     @Autowired
@@ -23,21 +24,15 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Optional<User> findUser(User user) {
-        List<User> users = userRepository.findAll(Example.of(user,getUserMatcher()));
+        List<User> users =
+          userRepository.findAll(
+            Example.of(user,
+              ExampleMatcher.matchingAny().withIgnoreNullValues().withIgnorePaths("password")));
         return OptionalUtils.getFirstNullableItem(users);
     }
 
     @Override
     public Optional<User> saveUser(User user) {
         return Optional.ofNullable(userRepository.save(user));
-    }
-
-    @Override
-    public ExampleMatcher getUserMatcher() {
-        return ExampleMatcher.matchingAny().
-                withIgnorePaths("password").
-                withIgnorePaths("createDate").
-                withIgnorePaths("isActive").
-                withIgnoreNullValues();
     }
 }
