@@ -1,7 +1,7 @@
 package com.laiteam.echowall.httpservice.api;
 
 import com.laiteam.echowall.common.exception.InvalidRequestException;
-import com.laiteam.echowall.dal.entity.GenderType;
+import com.laiteam.echowall.dal.entity.Gender;
 import com.laiteam.echowall.dal.entity.Profile;
 import com.laiteam.echowall.dal.entity.User;
 import com.laiteam.echowall.httpservice.response.ProfileResponse;
@@ -18,6 +18,7 @@ import java.util.function.Supplier;
 
 @Controller
 public class ProfileApi {
+
     private final ProfileService profileService;
 
     @Autowired
@@ -28,15 +29,17 @@ public class ProfileApi {
     @GetMapping(path = "/profile/{id}")
     public ResponseEntity<?> userProfile(@PathVariable Long id) throws Throwable {
         return profileService.findByUserId(id)
-                .map(it -> ResponseEntity.ok(ProfileResponse.convert(it)))
-                .orElseThrow((Supplier<Throwable>) () -> new InvalidRequestException("Can't find the current user's profile"));
+          .map(it -> ResponseEntity.ok(ProfileResponse.convert(it)))
+          .orElseThrow((Supplier<Throwable>) () -> new InvalidRequestException(
+            "Can't find the current user's profile"));
     }
 
-    //TODO("Just an example")
     @GetMapping(path = "/profile/save")
     public ResponseEntity<?> saveProfile(@AuthenticationPrincipal User user) {
-        Profile profile = Profile.builder().id(1L).user(User.builder().id(1L).build()).avatarUrl("https://pa1.narvii.com/6404/35b2929ca438e295554d2460707145d35456f2c2_128.gif")
-                .dob(new Date()).aboutMe("Lazy Man").gender(GenderType.builder().id(1L).build()).build();
+        Profile profile = Profile.builder().id(1L).user(User.builder().id(1L).build())
+          .avatarUrl(
+            "https://pa1.narvii.com/6404/35b2929ca438e295554d2460707145d35456f2c2_128.gif")
+          .dob(new Date()).aboutMe("Lazy Man").gender(Gender.FEMALE).build();
         return ResponseEntity.ok(profileService.saveProfile(profile));
     }
 

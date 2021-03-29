@@ -12,6 +12,7 @@ import java.util.Date;
 @Setter
 @Getter
 public class ProfileResponse {
+
     private String username;
     private String email;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
@@ -25,7 +26,7 @@ public class ProfileResponse {
 
     public static ProfileResponse convert(Profile profile) {
         ProfileResponse response = BeanUtils.copyProperties(profile, ProfileResponse.class);
-        response.setGender(profile.getGender().getGender());
+        response.setGender(profile.getGender().name());
         response.setEmail(profile.getUser().getEmail());
         response.setUsername(profile.getUser().getUsername());
         response.setCreateDate(profile.getUser().getCreateDate());

@@ -9,6 +9,7 @@ https://github.com/LaiTeam2021
 [Setup Build Config](https://developerforfun.quip.com/vn1XAQS5KVCn/Spring-Configuration)
 [Install PostgreSQL For Local Testing](https://www.postgresql.org/download/)
 Db_name: postgres Password:12345678
+[Google format](https://plugins.jetbrains.com/plugin/8527-google-java-format) (Pick Android Code Style)
 [Fly away](https://www.callicoder.com/spring-boot-flyway-database-migration-example/)
 
 ## Backend Design

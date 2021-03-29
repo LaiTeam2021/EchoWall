@@ -10,7 +10,8 @@ import java.util.List;
 
 @Getter
 @Setter
-public class TopicResponse{
+public class TopicResponse {
+
     private String name;
     private String nameCN;
 
