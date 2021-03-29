@@ -1,5 +1,6 @@
 package com.laiteam.echowall.dal.entity;
 
+import java.io.Serializable;
 import lombok.*;
 
 import javax.persistence.*;
@@ -13,7 +14,7 @@ import java.util.Date;
 @Getter
 @Entity
 @Table(name = "profile")
-public class Profile {
+public class Profile implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
