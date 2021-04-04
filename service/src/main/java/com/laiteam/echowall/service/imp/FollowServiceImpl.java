@@ -5,25 +5,22 @@ import com.laiteam.echowall.dal.entity.Profile;
 import com.laiteam.echowall.dal.repository.FollowRepository;
 import com.laiteam.echowall.dal.repository.ProfileRepository;
 import com.laiteam.echowall.service.FollowService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.laiteam.echowall.service.dto.Pagination;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.List;
 import java.util.Optional;
 
 @Service
+@Slf4j
+@AllArgsConstructor
 public class FollowServiceImpl implements FollowService {
     private final FollowRepository followRepository;
-
     private final ProfileRepository profileRepository;
-
-    @Autowired
-    public FollowServiceImpl(FollowRepository followRepository, ProfileRepository profileRepository) {
-        this.followRepository = followRepository;
-        this.profileRepository = profileRepository;
-    }
 
     @Override
     public Optional<Follow> followUser(Long userId, Long followId) {
@@ -32,9 +29,13 @@ public class FollowServiceImpl implements FollowService {
     }
 
     @Override
-    public List<Profile> getAllFollowers(Long userId, Integer page, Integer size) {
+    public Pagination<Profile> getAllFollowers(Long userId, Integer page, Integer size) {
         page = page <= 1 ? 0 : page - 1;
-        return followRepository.findAllByUserId(userId, PageRequest.of(page, size)).getContent();
+        Page<Profile> response = followRepository.findAllByUserId(userId, PageRequest.of(page, size));
+        Pagination pagination = new Pagination(response.getContent(), response.getTotalElements(), response.getTotalPages());
+        pagination.setCurrentPage(page + 1);
+        pagination.setPageSize(size);
+        return pagination;
     }
 
     @Override
@@ -45,7 +46,7 @@ public class FollowServiceImpl implements FollowService {
     }
 
     @Override
-    public Optional<Follow> getFollower(Long userId, Long followId) {
+    public Optional<Follow> isFollowed(Long userId, Long followId) {
         return followRepository.findFollowByUserIdAndFollowId(userId, followId);
     }
 }
