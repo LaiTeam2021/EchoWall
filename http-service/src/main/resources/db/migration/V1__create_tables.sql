@@ -66,6 +66,14 @@ CREATE TABLE favorite_topics
     PRIMARY KEY (user_id, topic_id)
 );
 
+CREATE TABLE user_verification_codes
+(
+    id       BIGSERIAL PRIMARY KEY,
+    email       VARCHAR(50) UNIQUE REFERENCES users(email) NOT NULL,
+    verification_code VARCHAR(6) NOT NULL,
+    expiration_time TIMESTAMP NOT NULL
+);
+
 -- users password 12345678
 INSERT INTO users(username, email, password)
 VALUES ('test123', 'developerforfun2020@gmail.com', '$2a$10$NiRFezagti1J8Nk7uGwbKeIA8ADF14pM8OLS6gc5hU0Tf5gXo92Me');
