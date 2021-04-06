@@ -23,7 +23,7 @@ public class FollowApi {
     private final ProfileService profileService;
     private final UserService userService;
 
-    @GetMapping(path = "/follow/{userId}")
+    @PostMapping(path = "/follow/all/{userId}")
     public ResponseEntity<PaginationResponse<ProfileResponse>> getAllFollowers(@PathVariable Long userId,
                                          @RequestParam(defaultValue = "1", name = "page") Integer page,
                                          @RequestParam(defaultValue = "10", name = "size") Integer size) {
@@ -51,7 +51,7 @@ public class FollowApi {
     }
 
     @PostMapping(path = "/unfollow/{followerId}")
-    public ResponseEntity<?> unFollow(@AuthenticationPrincipal User user, @PathVariable Long followerId) throws Throwable {
+    public ResponseEntity<ProfileResponse> unFollow(@AuthenticationPrincipal User user, @PathVariable Long followerId) throws Throwable {
         Long userId = user.getId();
         if (!followService.isFollowed(userId, followerId).isPresent()) {
             throw new InvalidRequestException("You are not following this user");
