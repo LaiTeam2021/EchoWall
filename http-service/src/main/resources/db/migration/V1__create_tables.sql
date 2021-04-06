@@ -73,6 +73,23 @@ CREATE TABLE follow (
     PRIMARY KEY (user_id, follow_id)
 );
 
+CREATE TABLE notification_type (
+  id BIGINT PRIMARY KEY,
+  type VARCHAR(20) UNIQUE NOT NULL
+);
+
+CREATE TABLE notification (
+  id BIGINT PRIMARY KEY,
+  send_id BIGINT REFERENCES users (id),
+  recipient_id BIGINT NOT NULL REFERENCES users (id),
+  post_id BIGSERIAL REFERENCES post (id),
+  deep_link VARCHAR(255) NOT NULL,
+  notification_type_id BIGINT REFERENCES notification_type (id),
+  create_date TIMESTAMP NOT NULL DEFAULT NOW(),
+  is_deleted BOOLEAN DEFAULT FALSE,
+  is_read BOOLEAN DEFAULT FALSE
+);
+
 -- users password 12345678
 INSERT INTO users(username, email, password)
 VALUES ('test123', 'developerforfun2020@gmail.com', '$2a$10$NiRFezagti1J8Nk7uGwbKeIA8ADF14pM8OLS6gc5hU0Tf5gXo92Me');
@@ -110,3 +127,17 @@ INSERT INTO favorite_topics(user_id, topic_id)
 VALUES (1, 1);
 INSERT INTO favorite_topics(user_id, topic_id)
 VALUES (1, 2);
+
+-- notification_type
+INSERT INTO notification_type(id, type)
+VALUES (1, 'reply_comment');
+INSERT INTO notification_type(id, type)
+VALUES (2, 'reply_post');
+INSERT INTO notification_type(id, type)
+VALUES (3, 'follow');
+INSERT INTO notification_type(id, type)
+VALUES (4, 'favorite');
+INSERT INTO notification_type(id, type)
+VALUES (5, 'share');
+INSERT INTO notification_type(id, type)
+VALUES (6, 'mention');
